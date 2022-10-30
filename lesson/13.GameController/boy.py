@@ -49,40 +49,39 @@ class RUN:
 
 next_state = {
     IDLE : {RU:RUN, LU:RUN, RD:RUN, LD:RUN},
-    RUN : { RU:IDLE, LU:IDLE, RD:IDLE, LD:IDLE}
+    RUN : { RU:IDLE, LU:IDLE, LD:IDLE, RD:IDLE}
 }
 
 
 class Boy:
 
+    def add_event(self, key_event):
+        self.q.insert(0, key_event)
+
     def handle_event(self, event):#키입력 이벤트
         if (event.type, event.key) in key_event_table:
             key_event = key_event_table[(event.type, event.key)]
-            self.add_event(event)
+            self.add_event(key_event)
         if self.q:# 만약에 list q에 뭔가 들어있으면
             event = self.q.pop()
             self.cur_state.exit()
             self.cur_state =  next_state[self.cur_state][event]
             self.cur_state.enter()
 
-
-        if event.type == SDL_KEYDOWN:
-            match event.key:
-                case pico2d.SDLK_LEFT:
-                    self.dir -= 1
-                case pico2d.SDLK_RIGHT:
-                    self.dir += 1
-        elif event.type == SDL_KEYUP:
-            match event.key:
-                case pico2d.SDLK_LEFT:
-                    self.dir += 1
-                    self.face_dir = -1
-                case pico2d.SDLK_RIGHT:
-                    self.dir -= 1
-                    self.face_dir = 1
-
-    def add_event(self, event):
-        self.event_que.insert(0, event)
+        # if event.type == SDL_KEYDOWN:
+        #     match event.key:
+        #         case pico2d.SDLK_LEFT:
+        #             self.dir -= 1
+        #         case pico2d.SDLK_RIGHT:
+        #             self.dir += 1
+        # elif event.type == SDL_KEYUP:
+        #     match event.key:
+        #         case pico2d.SDLK_LEFT:
+        #             self.dir += 1
+        #             self.face_dir = -1
+        #         case pico2d.SDLK_RIGHT:
+        #             self.dir -= 1
+        #             self.face_dir = 1
 
     def __init__(self):
         self.x, self.y = 0, 90
@@ -96,14 +95,15 @@ class Boy:
         self.cur_state.enter()
 
     def update(self):
-
         self.cur_state.do()
+
         #self.frame = (self.frame + 1) % 8
         #self.x += self.dir * 1
         #self.x = clamp(0, self.x, 800)
 
     def draw(self):
         self.cur_state.draw()
+
 #        if self.dir == -1:
 #            self.image.clip_draw(self.frame*100, 0, 100, 100, self.x, self.y)
 #        elif self.dir == 1:
