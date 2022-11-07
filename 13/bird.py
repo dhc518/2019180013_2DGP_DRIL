@@ -125,7 +125,8 @@ class IDLE:
 
 
     def do(self):
-        self.frame = (self.frame + 1) % 8
+        self.frame = (self.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 5
+ 
         self.x += self.dir
         #self.x = clamp(0, self.x, 800) #clamp가 뭔지 찾아보기
         if self.x == 800:
