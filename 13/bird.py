@@ -137,9 +137,9 @@ class IDLE:
 
     def draw(self):
         if self.dir == -1:
-            self.image.clip_composite_draw(int(self.frame)*180, 0, 190, 100,0,'h', self.x, self.y,100,100)
+            self.image.clip_composite_draw(int(self.frame)*180, 0, 190, 100,0,'v', self.x, self.y,100,100)
         elif self.dir == 1:
-            self.image.clip_draw(int(self.frame)*180, 0, 190, 100, self.x, self.y)
+            self.image.clip_composite_draw(int(self.frame)*180, 0, 190, 100,0, '', self.x, self.y, 100,100)
 
 #3. 상태 변환 구현
 
